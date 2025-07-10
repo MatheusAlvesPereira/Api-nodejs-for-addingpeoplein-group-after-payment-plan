@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Pagamento Confirmado</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-green-50 flex items-center justify-center min-h-screen">
+
+  <div class="bg-white p-8 rounded-2xl shadow-xl max-w-md text-center border border-green-200">
+    <div class="text-green-600 text-5xl mb-4">✅</div>
+    <h1 class="text-2xl font-bold text-gray-800 mb-2">Pagamento Confirmado</h1>
+    <p class="text-gray-600 mb-4">Obrigado pela sua compra! Seu pagamento foi processado com sucesso.</p>
+    <p class="text-gray-600 mb-4">Atenção agora é preciso entrar no grupo...</p>
+
+    <form action="/adicionar-ao-grupo" method="POST" class="mt-6">
+        <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Digite seu e-mail para acesso ao grupo:</label>
+        <input type="email" name="email" required
+            class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-400" />
+        <button type="submit"
+                class="mt-3 w-full bg-green-600 text-white py-2 rounded-lg hover:bg-green-700 transition">
+          Solicitar Acesso ao Grupo
+        </button>
+    </form>
+
+
+    <a href="/" class="inline-block mt-4 bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition">
+      Voltar ao Início
+    </a>
+  </div>
+</body>
+</html>

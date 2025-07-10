@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon Server.js"
   },
   "repository": {
     "type": "git",
@@ -16,5 +17,12 @@
   "bugs": {
     "url": "https://github.com/MatheusAlvesPereira/Api-nodejs-foraddingpeopleingroupafterpaymentaplan/issues"
   },
-  "homepage": "https://github.com/MatheusAlvesPereira/Api-nodejs-foraddingpeopleingroupafterpaymentaplan#readme"
+  "homepage": "https://github.com/MatheusAlvesPereira/Api-nodejs-foraddingpeopleingroupafterpaymentaplan#readme",
+  "dependencies": {
+    "axios": "^1.10.0",
+    "dotenv": "^17.2.0",
+    "express": "^5.1.0",
+    "mercadopago": "^2.8.0",
+    "nodemon": "^3.1.10"
+  }
 }
