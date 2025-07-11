@@ -14,45 +14,38 @@ const mp = new mercadopago.MercadoPagoConfig({
   
 const ACCESS_TOKEN_MERCADO_PAGO = process.env.MP_ACCESS_TOKEN;
 
-//remove
-app.post('/webhook', (req, res) => {
-    console.log("🔔 Webhook recebido");
-    res.sendStatus(200);
+app.post('/webhook', async (req, res) => {
+    const paymentId = req.body.data?.id;
+
+    console.log("📩 Webhook recebido:", req.body);
+
+    if (!paymentId) {
+        return res.status(400).send('ID do pagamento ausente');
+    }
+
+    try {
+        const response = await axios.get(
+        `https://api.mercadopago.com/v1/payments/${paymentId}`,
+        {
+            headers: {
+            Authorization: `Bearer ${ACCESS_TOKEN_MERCADO_PAGO}`,
+            },
+        }
+        );
+
+        const payment = response.data;
+
+        if (payment.status === 'approved') {
+            console.log('✅ Pagamento aprovado');
+        }
+
+        console.log('ℹ️ Pagamento não aprovado:', payment.status);
+        return res.sendStatus(200);
+    } catch (err) {
+        console.error('❌ Erro ao verificar pagamento:', err.message);
+        return res.sendStatus(500);
+    }
 });
-
-
-// app.post('/webhook', async (req, res) => {
-//     const paymentId = req.body.data?.id;
-
-//     console.log("📩 Webhook recebido:", req.body);
-
-//     if (!paymentId) {
-//         return res.status(400).send('ID do pagamento ausente');
-//     }
-
-//     try {
-//         const response = await axios.get(
-//         `https://api.mercadopago.com/v1/payments/${paymentId}`,
-//         {
-//             headers: {
-//             Authorization: `Bearer ${ACCESS_TOKEN_MERCADO_PAGO}`,
-//             },
-//         }
-//         );
-
-//         const payment = response.data;
-
-//         if (payment.status === 'approved') {
-//             console.log('✅ Pagamento aprovado');
-//         }
-
-//         console.log('ℹ️ Pagamento não aprovado:', payment.status);
-//         return res.sendStatus(200);
-//     } catch (err) {
-//         console.error('❌ Erro ao verificar pagamento:', err.message);
-//         return res.sendStatus(500);
-//     }
-// });
 
 app.post('/criar-pagamento', async (req, res) => {
     try {
@@ -65,26 +58,33 @@ app.post('/criar-pagamento', async (req, res) => {
           },
         ],
         back_urls: {
-          success: 'https://ngrok-free.app/pagamento-confirmado',
-          failure: 'https://ngrok-free.app/pagamento-falhou',
+          success: 'https://b2b4b9e994af.ngrok-free.app/payment-succes',
+          failure: 'https://b2b4b9e994af.ngrok-free.app/payment-failed',
           pending: 'https://.ngrok-free.app/pagamento-pendente',
         },
         auto_return: 'approved',
-        notification_url: 'https://373e613cdef9.ngrok-free.app/webhook'
+        notification_url: 'https://b2b4b9e994af.ngrok-free.app/webhook'
       };
   
       const response = await mp.preferences.create({ body: preference });
-      res.json({ url: response.body.init_point }); // link para teste   
+      res.json({ url: response.body.init_point });
     } catch (error) {
       console.error(error);
       res.status(500).send('Erro ao criar pagamento');
     }
 });
 
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'buytest.html'));
+app.get('/payment-succes', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'pagamentoconfirmado.html'));
 });
-  
+
+app.get('/payment-failed', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'pagamentofalhou.html'));
+});
+
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'buytest.html'));
+});
 
 app.listen(3000, () => {
   console.log('Servidor rodando em http://localhost:3000');
