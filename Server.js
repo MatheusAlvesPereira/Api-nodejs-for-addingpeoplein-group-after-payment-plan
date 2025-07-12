@@ -42,9 +42,8 @@ const ACCESS_TOKEN_MERCADO_PAGO = process.env.MP_ACCESS_TOKEN;
 app.post('/webhook', async (req, res) => {
     console.log("📩 Webhook recebido:", JSON.stringify(req.body, null, 2));
 
-    // MercadoPago webhook can send different types of notifications
     const paymentId = req.body.data?.id;
-    const topic = req.body.type; // payment, merchant_order, etc.
+    const topic = req.body.type; 
 
     console.log(`📋 Tipo de notificação: ${topic}`);
     console.log(`🆔 ID do pagamento: ${paymentId}`);
