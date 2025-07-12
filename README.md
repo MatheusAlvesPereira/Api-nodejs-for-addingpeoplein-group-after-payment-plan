@@ -1,150 +1,150 @@
 # 🛒 MercadoPago Payment Integration
 
-Este projeto demonstra como integrar pagamentos do MercadoPago com webhooks para notificações automáticas.
+This project demonstrates how to integrate MercadoPago payments with webhooks for automatic notifications.
 
-## 🚀 Como Funciona
+## 🚀 How It Works
 
-### 1. Fluxo de Compra
-1. **Usuário acessa** `buytest.html` e clica em "Comprar Agora"
-2. **Frontend** (`checkout.js`) faz requisição POST para `/criar-pagamento`
-3. **Backend** cria preferência no MercadoPago e retorna URL de checkout
-4. **Usuário é redirecionado** para o checkout do MercadoPago
-5. **Após pagamento**, usuário retorna para página de sucesso/falha
+### 1. Purchase Flow
+1. **User accesses** `buytest.html` and clicks "Buy Now"
+2. **Frontend** (`checkout.js`) makes POST request to `/criar-pagamento`
+3. **Backend** creates preference in MercadoPago and returns checkout URL
+4. **User is redirected** to MercadoPago checkout
+5. **After payment**, user returns to success/failure page
 
-### 2. Webhook (Notificações Automáticas)
-1. **MercadoPago envia webhook** para `/webhook` quando status do pagamento muda
-2. **Backend processa** a notificação e verifica status do pagamento
-3. **Logs detalhados** são exibidos no console do servidor
-4. **Ações automáticas** podem ser executadas (adicionar ao grupo, enviar email, etc.)
+### 2. Webhook (Automatic Notifications)
+1. **MercadoPago sends webhook** to `/webhook` when payment status changes
+2. **Backend processes** the notification and verifies payment status
+3. **Detailed logs** are displayed in server console
+4. **Automatic actions** can be executed (add to group, send email, etc.)
 
-## 📋 Pré-requisitos
+## 📋 Prerequisites
 
-1. **Conta MercadoPago** com credenciais de produção ou sandbox
-2. **Node.js** instalado
-3. **ngrok** ou similar para expor localhost (para webhooks)
+1. **MercadoPago account** with production or sandbox credentials
+2. **Node.js** installed
+3. **ngrok** or similar to expose localhost (for webhooks)
 
-## ⚙️ Configuração
+## ⚙️ Configuration
 
-### 1. Variáveis de Ambiente
-Crie um arquivo `.env` na raiz do projeto:
+### 1. Environment Variables
+Create a `.env` file in the project root:
 
 ```env
 MP_ACCESS_TOKEN=TEST-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
 ```
 
-### 2. Instalar Dependências
+### 2. Install Dependencies
 ```bash
 npm install
 ```
 
-### 3. Configurar ngrok (para webhooks)
+### 3. Configure ngrok (for webhooks)
 ```bash
 ngrok http 3000
 ```
 
-Copie a URL do ngrok e atualize no `Server.js`:
+Copy the ngrok URL and update it in `Server.js`:
 ```javascript
-notification_url: 'https://seu-ngrok-url.ngrok-free.app/webhook'
+notification_url: 'https://your-ngrok-url.ngrok-free.app/webhook'
 ```
 
-## 🏃‍♂️ Como Executar
+## 🏃‍♂️ How to Run
 
-### 1. Iniciar Servidor
+### 1. Start Server
 ```bash
-node Server.js
+npm run dev
 ```
 
-### 2. Acessar Aplicação
-- Abra: `http://localhost:3000`
-- Clique em "Comprar Agora"
-- Complete o pagamento no MercadoPago
+### 2. Access Application
+- Open: `http://localhost:3000`
+- Click "Buy Now"
+- Complete payment on MercadoPago
 
-### 3. Testar Webhook
+### 3. Test Webhook
 ```bash
 node test-webhook.js
 ```
 
-## 📁 Estrutura dos Arquivos
+## 📁 File Structure
 
 ```
-├── Server.js                 # Servidor principal
+├── Server.js                 # Main server
 ├── public/
-│   ├── buytest.html         # Página de compra
-│   ├── checkout.js          # JavaScript do frontend
-│   ├── pagamentoconfirmado.html  # Página de sucesso
-│   ├── pagamentofalhou.html      # Página de falha
-│   └── pagamentopendente.html    # Página de pendente
-├── test-webhook.js          # Script de teste
-└── README.md               # Este arquivo
+│   ├── buytest.html         # Purchase page
+│   ├── checkout.js          # Frontend JavaScript
+│   ├── pagamentoconfirmado.html  # Success page
+│   ├── pagamentofalhou.html      # Failure page
+│   └── pagamentopendente.html    # Pending page
+├── test-webhook.js          # Test script
+└── README.md               # This file
 ```
 
 ## 🔧 Endpoints
 
 ### POST `/criar-pagamento`
-- **Função**: Cria preferência de pagamento no MercadoPago
-- **Retorna**: URL do checkout
+- **Function**: Creates payment preference in MercadoPago
+- **Returns**: Checkout URL
 
 ### POST `/webhook`
-- **Função**: Recebe notificações do MercadoPago
-- **Processa**: Status do pagamento automaticamente
+- **Function**: Receives notifications from MercadoPago
+- **Processes**: Payment status automatically
 
 ### GET `/payment-success`
-- **Função**: Página de pagamento aprovado
+- **Function**: Approved payment page
 
 ### GET `/payment-failed`
-- **Função**: Página de pagamento falhou
+- **Function**: Failed payment page
 
 ### GET `/payment-pending`
-- **Função**: Página de pagamento pendente
+- **Function**: Pending payment page
 
-## 📊 Status de Pagamento
+## 📊 Payment Status
 
-O webhook processa os seguintes status:
+The webhook processes the following statuses:
 
-- **`approved`**: ✅ Pagamento aprovado
-- **`pending`**: ⏳ Pagamento pendente
-- **`rejected`**: ❌ Pagamento rejeitado
-- **`cancelled`**: 🚫 Pagamento cancelado
+- **`approved`**: ✅ Payment approved
+- **`pending`**: ⏳ Payment pending
+- **`rejected`**: ❌ Payment rejected
+- **`cancelled`**: 🚫 Payment cancelled
 
-## 🔍 Logs e Debug
+## 🔍 Logs and Debug
 
-O servidor exibe logs detalhados no console:
+The server displays detailed logs in the console:
 
 ```
-📩 Webhook recebido: { ... }
-📋 Tipo de notificação: payment
-🆔 ID do pagamento: 123456789
-💰 Status do pagamento: approved
-💵 Valor: 50.00
-👤 Pagador: user@example.com
-✅ Pagamento aprovado - Processando...
+📩 Webhook received: { ... }
+📋 Notification type: payment
+🆔 Payment ID: 123456789
+💰 Payment status: approved
+💵 Amount: 50.00
+👤 Payer: user@example.com
+✅ Payment approved - Processing...
 ```
 
-## 🛠️ Personalização
+## 🛠️ Customization
 
-### Adicionar Lógica de Negócio
-No `Server.js`, dentro do webhook, adicione sua lógica:
+### Add Business Logic
+In `Server.js`, within the webhook, add your logic:
 
 ```javascript
 if (payment.status === 'approved') {
-    console.log('✅ Pagamento aprovado - Processando...');
+    console.log('✅ Payment approved - Processing...');
     
-    // Adicione aqui sua lógica:
-    // - Adicionar usuário ao grupo
-    // - Enviar email de confirmação
-    // - Atualizar banco de dados
+    // Add your logic here:
+    // - Add user to group
+    // - Send confirmation email
+    // - Update database
     // - etc.
 }
 ```
 
-### Modificar Produto
-No `Server.js`, altere os dados do produto:
+### Modify Product
+In `Server.js`, change the product data:
 
 ```javascript
 const preference = {
     items: [
         {
-            title: 'Seu Produto',
+            title: 'Your Product',
             quantity: 1,
             unit_price: 99.99,
         },
@@ -153,32 +153,32 @@ const preference = {
 };
 ```
 
-## 🧪 Testando
+## 🧪 Testing
 
-### 1. Teste Local
+### 1. Local Test
 ```bash
 node test-webhook.js
 ```
 
-### 2. Teste Real
-1. Faça uma compra real
-2. Verifique os logs no console
-3. Confirme se o webhook foi recebido
+### 2. Real Test
+1. Make a real purchase
+2. Check the console logs
+3. Confirm if the webhook was received
 
-## 🔒 Segurança
+## 🔒 Security
 
-- ✅ Validação de webhook implementada
-- ✅ Verificação de status via API do MercadoPago
-- ✅ Logs detalhados para auditoria
-- ⚠️ Configure HTTPS em produção
-- ⚠️ Valide assinatura do webhook em produção
+- ✅ Webhook validation implemented
+- ✅ Status verification via MercadoPago API
+- ✅ Detailed logs for auditing
+- ⚠️ Configure HTTPS in production
+- ⚠️ Validate webhook signature in production
 
-## 📞 Suporte
+## 📞 Support
 
-Para dúvidas sobre a integração:
-- [Documentação MercadoPago](https://www.mercadopago.com.br/developers)
-- [Webhooks MercadoPago](https://www.mercadopago.com.br/developers/docs/webhooks)
+For questions about the integration:
+- [MercadoPago Documentation](https://www.mercadopago.com.br/developers)
+- [MercadoPago Webhooks](https://www.mercadopago.com.br/developers/docs/webhooks)
 
 ---
 
-**🎉 Agora você tem um sistema completo de pagamentos com notificações automáticas!**
+**🎉 Now you have a complete payment system with automatic notifications!**
