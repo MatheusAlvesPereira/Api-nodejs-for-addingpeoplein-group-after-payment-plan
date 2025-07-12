@@ -1,15 +1,122 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Buy Test</title>
+    <title>Teste de Compra - MercadoPago</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            text-align: center;
+            max-width: 500px;
+            width: 100%;
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+        }
+        .product-card {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border: 2px solid #e9ecef;
+        }
+        .product-title {
+            font-size: 1.5em;
+            color: #495057;
+            margin-bottom: 10px;
+        }
+        .product-price {
+            font-size: 2em;
+            color: #28a745;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        .product-features {
+            list-style: none;
+            padding: 0;
+            margin: 20px 0;
+        }
+        .product-features li {
+            padding: 8px 0;
+            color: #6c757d;
+        }
+        .product-features li:before {
+            content: "✓ ";
+            color: #28a745;
+            font-weight: bold;
+        }
+        #buy-btn {
+            background: linear-gradient(45deg, #007bff, #0056b3);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.2em;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,123,255,0.3);
+        }
+        #buy-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,123,255,0.4);
+        }
+        #buy-btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+        .info {
+            margin-top: 30px;
+            padding: 15px;
+            background: #e7f3ff;
+            border-radius: 8px;
+            border-left: 4px solid #007bff;
+        }
+        .info p {
+            margin: 5px 0;
+            color: #0056b3;
+            font-size: 0.9em;
+        }
+    </style>
 </head>
 <body>
-    <h1>BUY TEST</h1>
+    <div class="container">
+        <h1>🛒 Teste de Compra</h1>
+        
+        <div class="product-card">
+            <div class="product-title">Plano Premium</div>
+            <div class="product-price">R$ 50,00</div>
+            <ul class="product-features">
+                <li>Acesso completo por 30 dias</li>
+                <li>Suporte prioritário</li>
+                <li>Recursos avançados</li>
+                <li>Sem anúncios</li>
+            </ul>
+        </div>
 
-    <div id="wallet_container"></div>
-    <button id="buy-btn">buy</button>
+        <button id="buy-btn">Comprar Agora</button>
+        
+        <div class="info">
+            <p><strong>💳 Pagamento seguro via MercadoPago</strong></p>
+            <p>Você será redirecionado para o checkout seguro</p>
+            <p>Após o pagamento, você receberá uma confirmação</p>
+        </div>
+    </div>
 
     <script src="checkout.js"></script>
 </body>
