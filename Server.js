@@ -3,12 +3,13 @@ const path = require('path');
 const axios = require('axios');
 const mercadopago = require('mercadopago');
 require('dotenv').config({ quiet: true });
+const { google } = require('googleapis');
 
 const app = express();
 app.use(express.json());
 app.use(express.static('public'));
+app.use(express.urlencoded({ extended: true }));
 
-// Configure MercadoPago
 if (!process.env.MP_ACCESS_TOKEN) {
   console.error('❌ MP_ACCESS_TOKEN não encontrado no arquivo .env');
   process.exit(1);
@@ -18,7 +19,6 @@ if (!process.env.MP_ACCESS_TOKEN) {
 let preference;
 
 try {
-  // Try the new API first
   const { MercadoPagoConfig, Preference: PreferenceClass } = mercadopago;
   const mercadoPagoConfig = new MercadoPagoConfig({
     accessToken: process.env.MP_ACCESS_TOKEN
@@ -27,7 +27,7 @@ try {
   console.log('✅ Usando nova API do MercadoPago');
 } catch (error) {
   console.log('⚠️ Nova API falhou, tentando API antiga...');
-  // Fallback to old API
+
   mercadopago.configure({
     access_token: process.env.MP_ACCESS_TOKEN
   });
@@ -162,6 +162,36 @@ app.get('/payment-pending', (req, res) => {
 
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'buytest.html'));
+});
+
+const googleAuth = new google.auth.JWT(
+  process.env.GOOGLE_CLIENT_EMAIL,
+  null,
+  process.env.GOOGLE_PRIVATE_KEY.replace(/\\n/g, '\n'),
+  ['https://www.googleapis.com/auth/admin.directory.group.member'],
+  process.env.ADMIN_USER
+);
+
+const directory = google.admin({ version: 'directory_v1', auth: googleAuth });
+
+app.post('/adicionar-ao-grupo', async (req, res) => {
+  const email = req.body.email;
+  try {
+    await directory.members.insert({
+      groupKey: process.env.GOOGLE_GROUP_EMAIL,
+      requestBody: {
+        email,  
+        role: 'MEMBER'
+      }
+    });
+    res.send(`
+      <h1 style="text-align:center;margin-top:100px">✅ E-mail adicionado ao grupo com sucesso!</h1>
+      <a href="/" style="display:block;text-align:center;margin-top:20px">Voltar</a>
+    `);
+  } catch (error) {
+    console.error('Erro ao adicionar ao grupo:', error);
+    res.status(500).send(`<h1>Erro ao adicionar: ${error.message}</h1>`);
+  }
 });
 
 app.listen(3000, () => {
