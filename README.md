@@ -100,7 +100,7 @@ node test-webhook.js
 ### GET `/payment-pending`
 - **Function**: Pending payment page
 
-### Post `/adicionar-ao-grupo`
+### POST `/adicionar-ao-grupo`
 - **Function**: Adding user to a group after payment-success
 
 ## 📊 Payment Status
