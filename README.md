@@ -100,6 +100,9 @@ node test-webhook.js
 ### GET `/payment-pending`
 - **Function**: Pending payment page
 
+### Post `/adicionar-ao-grupo`
+- **Function**: Adding user to a group after payment-success
+
 ## 📊 Payment Status
 
 The webhook processes the following statuses:
@@ -124,21 +127,6 @@ The server displays detailed logs in the console:
 ```
 
 ## 🛠️ Customization
-
-### Add Business Logic
-In `Server.js`, within the webhook, add your logic:
-
-```javascript
-if (payment.status === 'approved') {
-    console.log('✅ Payment approved - Processing...');
-    
-    // Add your logic here:
-    // - Add user to group
-    // - Send confirmation email
-    // - Update database
-    // - etc.
-}
-```
 
 ### Modify Product
 In `Server.js`, change the product data:
